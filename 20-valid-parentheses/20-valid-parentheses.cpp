@@ -21,6 +21,7 @@ public:
                 }
             }
         }
+        
         if(c.empty())
             return 1;
         else
