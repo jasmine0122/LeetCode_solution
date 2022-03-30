@@ -16,6 +16,10 @@ public:
                     R--;
                 R--;
             }
+            else{
+                L++;
+                R--;
+            }
         }
         return M;
     }
