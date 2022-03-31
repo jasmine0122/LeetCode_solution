@@ -12,6 +12,7 @@ public:
             }
             L--;
         }
+        
         vector<int>::iterator it = digits.begin();
         digits.insert(it, 1);
         return digits;
