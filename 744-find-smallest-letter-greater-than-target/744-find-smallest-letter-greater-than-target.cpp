@@ -6,7 +6,6 @@ public:
         
         while(low <= high){
             int mid = high + (low - high)/2;
-            //cout<<letters[mid]<<" "<<target<<endl;
             if(letters[mid] > target){
                 cout<<"hi"<<endl;
                 ans = letters[mid];
