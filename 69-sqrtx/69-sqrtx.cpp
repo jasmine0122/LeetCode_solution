@@ -4,7 +4,7 @@ public:
         int low = 0, high = x;
         
         while(low <= high){
-            int mid = (long long)(low+high)/2; 
+            int mid = high + (low - high)/2;
             if((long long)mid*mid == x)
                 return mid;
             else if((long long)mid*mid > x)
