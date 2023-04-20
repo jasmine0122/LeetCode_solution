@@ -21,6 +21,7 @@ public:
 
         low = 0;
         high = e;
+        
         while(low <= high){
             int mid = low + (high - low)/2;
             if(nums[mid] < target)
