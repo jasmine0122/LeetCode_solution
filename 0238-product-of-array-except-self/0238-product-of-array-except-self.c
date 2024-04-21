@@ -12,7 +12,6 @@ int* productExceptSelf(int* nums, int numsSize, int* returnSize) {
     }
 
     int temp = nums[numsSize-1];
-    // printf("%d\n", temp);
     for(int i=numsSize-2; i>=0; i--){
         prefix[i] *= temp;
         temp *= nums[i];
