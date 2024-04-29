@@ -15,9 +15,9 @@ public:
         int count = 0;
         for(int i=0 ;i<26; i++){
             if(lower & (1 << i) && upper & (1 << i)){
-                int temp = upper & (1 << i);
-                int temp1 = lower & (1 << i);
-                cout<<temp && temp1;
+                // int temp = upper & (1 << i);
+                // int temp1 = lower & (1 << i);
+                // cout<<temp && temp1;
                 count++;                
             }
         }
