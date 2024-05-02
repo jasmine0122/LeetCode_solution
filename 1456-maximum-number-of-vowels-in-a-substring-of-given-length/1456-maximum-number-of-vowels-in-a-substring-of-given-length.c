@@ -11,6 +11,8 @@ int maxVowels(char* s, int k) {
     int max = count;
 
     for(int i=k; i<strlen(s); i++) {
+        if(max == k)
+            return max;
         count += judge(s[i]);
         if (judge(s[i-k]))
             count--;
