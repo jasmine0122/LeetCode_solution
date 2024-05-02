@@ -1,21 +1,22 @@
-bool isVowel(char c) {
-    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+bool judge(char a){
+    if(a == 'a' || a == 'e' || a == 'i' || a == 'o' || a == 'u')    
+        return 1;
+    return 0;
 }
+
 int maxVowels(char* s, int k) {
-    int maxVowels = 0, currentVowels = 0;
-    for (int i = 0; i < k; ++i) {
-        if (isVowel(s[i]))
-            currentVowels++;
+    int count = 0;
+    for(int i = 0; i < k; i++){
+        count += judge(s[i]);
     }
-    maxVowels = currentVowels;
+    int max = count;
 
-    for (int i = k; s[i] != '\0'; ++i) {
-        if (isVowel(s[i]))
-            currentVowels++;
-        if (isVowel(s[i - k]))
-            currentVowels--;
-        maxVowels = fmax(maxVowels, currentVowels);
+    for(int i=k; i<strlen(s); i++) {
+        count += judge(s[i]);
+        if (judge(s[i-k]))
+            count--;
+        count>max ? max=count : max;
     }
 
-    return maxVowels;
+    return max;
 }
