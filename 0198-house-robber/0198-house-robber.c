@@ -6,18 +6,12 @@ int rob(int* nums, int numsSize) {
     
     int dp[numsSize], max = 0;
     dp[0] = nums[0];
-    dp[1] = nums[1];
+    dp[1] = fmax(nums[0], nums[1]);
     
     int i = 2;
     while(i < numsSize){
-        dp[i] = 0;
-        int j = i-2;
-        while(j >= 0){
-            dp[i] = fmax(nums[i]+ dp[j], dp[i]);
-            j--;
-        }
-        max = fmax(dp[i], dp[i-1]);
+        dp[i] = fmax(dp[i-1], nums[i] + dp[i-2]);
         i++;
     }
-    return max;
+    return fmax(dp[numsSize-1], dp[numsSize-2]);
 }
