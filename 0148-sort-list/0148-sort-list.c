@@ -23,9 +23,8 @@ struct ListNode* sortedMerge(struct ListNode* a, struct ListNode* b){
     
     if(a == NULL)
         return b;
-    else if(b == NULL){
+    if(b == NULL)
         return a;
-    }
     
     if(a->val <= b->val){
         result = a;
@@ -33,7 +32,7 @@ struct ListNode* sortedMerge(struct ListNode* a, struct ListNode* b){
     }
     else{
         result = b;
-        result->next = sortedMerge(b->next, a);        
+        result->next = sortedMerge(a, b->next);        
     }
     return result;
 }
