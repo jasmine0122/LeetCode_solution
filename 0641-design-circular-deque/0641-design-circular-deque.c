@@ -1,146 +1,114 @@
-typedef struct node{
-    int val;
-    struct node *next;
-    struct node *prev;    
-} Node;
-
-
-typedef struct queue{
-    int size;
+typedef struct {
+    int *arr;
     int maxSize;
-    Node *head, *tail;
+    int size;
+    int front;
+    int rear;
 } MyCircularDeque;
 
 
 MyCircularDeque* myCircularDequeCreate(int k) {
-    MyCircularDeque *Q = malloc(sizeof(MyCircularDeque));
-    Q->size = 0;
-    Q->maxSize = k;
-    Q->head = Q->tail = NULL;
+    MyCircularDeque* tmp = malloc(sizeof(MyCircularDeque));
+    tmp->arr = malloc(sizeof(int)*k);
+    tmp->maxSize = k;
+    tmp->size = 0;
+    tmp->front = -1;
+    tmp->rear = -1;    
     
-    return Q;
-}
-
-bool myCircularDequeInsertFront(MyCircularDeque* obj, int value) {
-    if(obj->size == obj->maxSize)
-        return 0;
-    
-    Node *tmp = malloc(sizeof(Node));
-    tmp->val = value;
-    tmp->prev = NULL;
-    
-    if(obj->head == NULL){
-        tmp->next = NULL;
-        obj->head = tmp;
-        obj->tail = tmp;
-        
-    }
-    else{
-        obj->head->prev = tmp;
-        tmp->next = obj->head;
-        obj->head = tmp;
-    }
-    obj->size++;
-    
-    return 1;
-}
-
-bool myCircularDequeInsertLast(MyCircularDeque* obj, int value) {
-    if(obj->size == obj->maxSize)
-        return 0;
-    
-    Node *tmp = malloc(sizeof(Node));
-    tmp->val = value;
-    tmp->next = NULL;
-    
-    if(obj->head == NULL){
-        tmp->prev = NULL;
-        obj->head = tmp;
-        obj->tail = tmp;
-    }
-    else{
-        obj->tail->next = tmp;
-        tmp->prev = obj->tail;
-        obj->tail = tmp;
-        
-    }
-    obj->size++;
-    
-    return 1;
-}
-
-bool myCircularDequeDeleteFront(MyCircularDeque* obj) {
-    if(obj->head == NULL)
-        return 0;
-    else if(obj->head == obj->tail){
-        free(obj->head);
-        obj->head = NULL;
-        obj->tail = NULL;
-        obj->size = 0;
-        return 1;
-    }
-    else{
-        Node *tmp = malloc(sizeof(Node));
-        tmp = obj->head;
-        obj->head = obj->head->next;
-        obj->head->prev = NULL;
-        obj->size--;
-        free(tmp);
-        return 1;
-    }
-}
-
-bool myCircularDequeDeleteLast(MyCircularDeque* obj) {
-    if(obj->head == NULL)
-        return 0;
-    else if(obj->head == obj->tail){
-        free(obj->head);
-        obj->head = NULL;
-        obj->tail = NULL;
-        obj->size = 0;
-        return 1;
-    }
-    else{
-        Node *tmp = malloc(sizeof(Node));
-        tmp = obj->tail;
-        obj->tail = obj->tail->prev;
-        obj->tail->next = NULL;
-        free(tmp);
-        obj->size--;
-        return 1;
-    }
-}
-
-int myCircularDequeGetFront(MyCircularDeque* obj) {
-    if(obj->head == NULL)
-        return -1;
-    return obj->head->val;
-}
-
-int myCircularDequeGetRear(MyCircularDeque* obj) {
-    if(obj->head == NULL)
-        return -1;
-    return obj->tail->val;   
+    return tmp;
 }
 
 bool myCircularDequeIsEmpty(MyCircularDeque* obj) {
-    if(obj->size == 0 || obj->head == NULL)
+    if(obj->size == 0)
         return 1;
     return 0;
 }
 
 bool myCircularDequeIsFull(MyCircularDeque* obj) {
-    if(obj->size >= obj->maxSize)
+    if(obj->size == obj->maxSize)
         return 1;
-    return 0;
+    return 0;    
+}
+
+bool myCircularDequeInsertFront(MyCircularDeque* obj, int value) {
+    if(myCircularDequeIsFull(obj))
+        return 0;
+    if(myCircularDequeIsEmpty(obj)){
+        obj->front = 0;
+        obj->rear = 0;
+    }
+    else{
+        obj->front = ((obj->front-1) + obj->maxSize) % obj->maxSize;     
+    }
+    obj->size++;
+    obj->arr[obj->front] = value;
+    
+    return 1;
+}
+
+bool myCircularDequeInsertLast(MyCircularDeque* obj, int value) {
+    if(myCircularDequeIsFull(obj))
+        return 0;
+    if(myCircularDequeIsEmpty(obj)){
+        obj->front = 0;
+        obj->rear = 0;
+    }
+    else{
+        obj->rear = (obj->rear + 1) % obj->maxSize;     
+    }
+    obj->size++;
+    obj->arr[obj->rear] = value;
+    
+    return 1; 
+}
+
+bool myCircularDequeDeleteFront(MyCircularDeque* obj) {
+    if(myCircularDequeIsEmpty(obj))
+        return 0;
+    
+    if(obj->front == obj->rear){
+        obj->front = -1;
+        obj->rear = -1;
+    }
+    else{
+        obj->front = (obj->front + 1) % obj->maxSize;   
+    }
+    obj->size--;
+    
+    return 1; 
+}
+
+bool myCircularDequeDeleteLast(MyCircularDeque* obj) {
+     if(myCircularDequeIsEmpty(obj))
+        return 0;
+    
+    if(obj->front == obj->rear){
+        obj->front = -1;
+        obj->rear = -1;
+    }
+    else{
+        obj->rear = ((obj->rear-1) + obj->maxSize) % obj->maxSize;   
+    }
+    obj->size--;
+    
+    return 1;    
+}
+
+int myCircularDequeGetFront(MyCircularDeque* obj) {
+    if(myCircularDequeIsEmpty(obj))
+        return -1;
+    return obj->arr[obj->front];   
+}
+
+int myCircularDequeGetRear(MyCircularDeque* obj) {
+    if(myCircularDequeIsEmpty(obj))
+        return -1;
+    return obj->arr[obj->rear];   
 }
 
 void myCircularDequeFree(MyCircularDeque* obj) {
-    while(myCircularDequeIsEmpty(obj) == 0){
-        Node *tmp = malloc(sizeof(Node));
-        tmp = obj->head;
-        obj->head = obj->head->next;
-    }
+    free(obj->arr);
+    free(obj);
 }
 
 /**
